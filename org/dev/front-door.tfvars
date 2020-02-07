@@ -14,7 +14,7 @@ ARM_LOCATION        = "uksouth"
 
 
 front-door-settings = {
-  name          = "nds-afd-mwg-test"
+  name          = "<your AFD Name>"
   friendly_name = "My Azure Front Door Service" #optional
   #disable_bgp_route_propagation                = false                           #Default: false
   enforce_backend_pools_certificate_name_check = false
@@ -98,7 +98,7 @@ front-door-settings = {
   frontend_endpoint = {
     fe1 = {
       name                              = "exampleFrontendEndpoint1"
-      host_name                         = "nds-afd-mwg-test.azurefd.net"
+      host_name                         = "<your AFD Name>.azurefd.net"
       session_affinity_enabled          = false #default: false
       session_affinity_ttl_seconds      = 0     #default: 0
       custom_https_provisioning_enabled = false
@@ -110,7 +110,7 @@ front-door-settings = {
         azure_key_vault_certificate_secret_name    = ""
         azure_key_vault_certificate_secret_version = ""
       }
-      web_application_firewall_policy_link_name = "TerraformPolicy" #optional 
+      web_application_firewall_policy_link_name = "TerraformPolicy" #optional Enter the name of the waf policy you'll be creating 
     }                                                               #add extra here
 
   }

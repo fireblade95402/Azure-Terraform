@@ -12,11 +12,12 @@ terraform plan -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/
 
 Also, as this is a rough example. The secrets will need to be handled in a better way. To run this, you'll need the following:
 
+```terraform
 ARM_CLIENT_ID       = "<Azure Service Principle>"
 ARM_CLIENT_SECRET   = "<Azure Service Principle Secret>"
 ARM_SUBSCRIPTION_ID = "<Azure Subscription>"
 ARM_TENANT_ID       = "<Azure Tenant ID>"
 ARM_ENVIRONMENT     = "DEV"
 ARM_LOCATION        = "uksouth"
-
+```
 Good Luck!
