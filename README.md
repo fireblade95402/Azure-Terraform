@@ -8,8 +8,13 @@ It's a WIP, but to get this working. You'll need to update 2x tfvar files. One f
 
 Example: 
 
-terraform plan -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/dev/front-door-waf.tfvars"
+From the modules/deploy-front-door folder. You can run a similar statement to below:
 
+```bash
+terraform init
+terraform plan -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/dev/front-door-waf.tfvars"
+terraform apply -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/dev/front-door-waf.tfvars"
+```
 Also, as this is a rough example. The secrets will need to be handled in a better way. To run this, you'll need the following:
 
 ```terraform
