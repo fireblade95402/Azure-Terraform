@@ -15,7 +15,7 @@ terraform init
 terraform plan -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/dev/front-door-waf.tfvars"
 terraform apply -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/dev/front-door-waf.tfvars"
 ```
-Also, as this is a rough example. The secrets will need to be handled in a better way. To run this, you'll need the following:
+Also, as this is a rough example. The secrets will need to be handled in a better way. To run this, you'll need the following in the *front-door.tfvars* file:
 
 ```terraform
 ARM_CLIENT_ID       = "<Azure Service Principle>"
