@@ -2,7 +2,7 @@
 
 This is an example of deploying Azure Front Door and attaching a WAF to the frontend hosts all via Terraform.
 
-##Details
+## Details
 The terraform module will create:
 
  * 1 x Azure Front Door
@@ -16,7 +16,7 @@ The terraform module will create:
 ## NOTE
 It's a WIP, but to get this working. You'll need to update 2x tfvar files. One for Azure Front Door and the other for the WAF Polcies.
 
-**Example:** 
+## Example 
 
 From the modules/deploy-front-door folder. You can run a similar statement to below:
 
