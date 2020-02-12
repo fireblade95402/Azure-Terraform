@@ -142,9 +142,9 @@ front-door-object = {
         azure_key_vault_certificate_secret_name    = ""
         azure_key_vault_certificate_secret_version = ""
       }
-      #Linbks the WAF Policy to the Fronend Endpoints 
-      web_application_firewall_policy_link_name = "TerraformPolicy" #optional Enter the name of the waf policy you'll be creating 
-    }                                                               #Add extra  frontend Endpoints here (e.g. fe2 = {...}
+      #Links the WAF Policy to the Fronend Endpoints 
+      web_application_firewall_policy_link_name = "TerraformPolicy"              #Optional Enter the name of the waf policy you'll be creating 
+    }                                                                            #Add extra  frontend Endpoints here (e.g. fe2 = {...}
 
   }
 }
