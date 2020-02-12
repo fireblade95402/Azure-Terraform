@@ -47,58 +47,56 @@ The following front-door-object shows an example of the composition:
 ```hcl
 Sample of front door configuration object below
 
-front-door-settings = {
+front-door-object = {
   name          = "<your AFD Name>"
-  friendly_name = "My Azure Front Door Service" #optional
+  friendly_name = "My Azure Front Door Service"                                   #Optional
   #disable_bgp_route_propagation                = false                           #Default: false
   enforce_backend_pools_certificate_name_check = false
-  load_balancer_enabled                        = true #Default: true  
-
-  #tags = inherit from terraform structure                                        #optional
+  load_balancer_enabled                        = true                             #Default: true  
 
   routing_rule = {
     rr1 = {
       name               = "exampleRoutingRule1"
       frontend_endpoints = ["exampleFrontendEndpoint1"]
-      accepted_protocols = ["Http", "Https"] #default: "Http"
-      patterns_to_match  = ["/*"]            #default: "/*"
-      enabled            = true              #default: true
-      configuration      = "Forwarding"      #Options: Forwarding / Redirect  
+      accepted_protocols = ["Http", "Https"]                                      #Default: "Http"
+      patterns_to_match  = ["/*"]                                                 #Default: "/*"
+      enabled            = true                                                   #Default: true
+      configuration      = "Forwarding"                                           #Options: Forwarding / Redirect  
       forwarding_configuration = {
         backend_pool_name                     = "exampleBackendBing1"
-        cache_enabled                         = false       #default: false
-        cache_use_dynamic_compression         = false       #default: false
-        cache_query_parameter_strip_directive = "StripNone" #default: "StripNone"
+        cache_enabled                         = false                             #Default: false
+        cache_use_dynamic_compression         = false                             #Default: false
+        cache_query_parameter_strip_directive = "StripNone"                       #Default: "StripNone"
         custom_forwarding_path                = ""
-        forwarding_protocol                   = "MatchRequest" #default: "BestMatch"  
+        forwarding_protocol                   = "MatchRequest"                    #Default: "BestMatch"  
       }
       redirect_configuration = {
-        custom_host         = ""             #optional
-        redirect_protocol   = "MatchRequest" #default: "MatchRequest"  
-        redirect_type       = "Found"        #default: "Found"
+        custom_host         = ""                                                  #Optional
+        redirect_protocol   = "MatchRequest"                                      #Default: "MatchRequest"  
+        redirect_type       = "Found"                                             #Default: "Found"
         custom_fragment     = ""
         custom_path         = ""
         custom_query_string = ""
       }
-    } #add extra routing rules here
+    }                                                                             #Add extra routing rules here (e.g. rr2 = {...}
   }
 
   backend_pool_load_balancing = {
     lb1 = {
       name                            = "exampleLoadBalancingSettings1"
-      sample_size                     = 4 #default: 4
-      successful_samples_required     = 2 #default: 2
-      additional_latency_milliseconds = 0 #default: 0
-    }                                     #add extra backend load balancing names here
+      sample_size                     = 4                                         #Default: 4
+      successful_samples_required     = 2                                         #Default: 2
+      additional_latency_milliseconds = 0                                         #Default: 0
+    }                                                                             #Add extra backend load balancing names here (e.g. lb2 = {...}
   }
 
   backend_pool_health_probe = {
     hp1 = {
       name                = "exampleHealthProbeSetting1"
       path                = "/"
-      protocol            = "Http" #default: Http
-      interval_in_seconds = 120    #default: 120
-    }                              #add extra health probes here
+      protocol            = "Http"                                                #Default: Http
+      interval_in_seconds = 120                                                   #Default: 120
+    }                                                                             #Add extra health probes here (e.g. hp2 = {...}
   }
 
   backend_pool = {
@@ -111,8 +109,8 @@ front-door-settings = {
           host_header = "www.bing.com"
           http_port   = 80
           https_port  = 443
-          priority    = 1  #default: 1
-          weight      = 50 #default: 50
+          priority    = 1                                                         #Default: 1
+          weight      = 50                                                        #Default: 50
         },
         be2 = {
           enabled     = true
@@ -122,11 +120,11 @@ front-door-settings = {
           https_port  = 443
           priority    = 1  #default: 1
           weight      = 50 #default: 50
-        }
+        }                                                                        #Add extra backend's here (e.g. be3 = {...}
       }
-      load_balancing_name = "exampleLoadBalancingSettings1"
-      health_probe_name   = "exampleHealthProbeSetting1"
-    } #add extra backend pools here
+      load_balancing_name = "exampleLoadBalancingSettings1"                      #Name of backend_pool_load_balancing to use
+      health_probe_name   = "exampleHealthProbeSetting1"                         #Name of backend_pool_health_probe to use
+    }                                                                            #Add extra backend pools here (e.g. bp2 = {...}
   }
 
   frontend_endpoint = {
@@ -138,14 +136,15 @@ front-door-settings = {
       custom_https_provisioning_enabled = false
       #Required if custom_https_provisioning_enabled is true
       custom_https_configuration = {
-        certificate_source = "FrontDoor" #Optional (FrontDoor / AzureKeyVault)
+        certificate_source = "FrontDoor"                                         #Optional (FrontDoor / AzureKeyVault)
         #If certificate source is AzureKeyVault the below are required:
         azure_key_vault_certificate_vault_id       = ""
         azure_key_vault_certificate_secret_name    = ""
         azure_key_vault_certificate_secret_version = ""
       }
+      #Linbks the WAF Policy to the Fronend Endpoints 
       web_application_firewall_policy_link_name = "TerraformPolicy" #optional Enter the name of the waf policy you'll be creating 
-    }                                                               #add extra here
+    }                                                               #Add extra  frontend Endpoints here (e.g. fe2 = {...}
 
   }
 }
