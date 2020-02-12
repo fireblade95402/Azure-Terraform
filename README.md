@@ -326,33 +326,34 @@ The following front-door-waf-object shows an example of the composition:
 
 ```hcl
 Sample of front door waf configuration object below
-front-door-waf-settings = {
+
+front-door-waf-object = {
   waf1 = {
     name         = "TerraformPolicy"
-    enabled      = true                                                                      #Default: true
-    mode         = "Prevention"                                                              #Options: Prevention / Detection
-    redirect_url = "https://www.bing.com"                                                    #Optional
+    enabled      = true                                                        #Default: true
+    mode         = "Prevention"                                                #Options: Prevention / Detection
+    redirect_url = "https://www.bing.com"                                      #Optional
     custom_rule = {
       cr1 = {
         name     = "Rule1"
-        action   = "Block"                                                                   #Options: Allow/Block/Log/Redirect
-        enabled  = true                                                                      #Default: true
-        priority = 1                                                                         #Default: 1
-        type     = "MatchRule"                                                               #Options: MatchRule / RateLimitRule
+        action   = "Block"                                                     #Options: Allow/Block/Log/Redirect
+        enabled  = true                                                        #Default: true
+        priority = 1                                                           #Default: 1
+        type     = "MatchRule"                                                 #Options: MatchRule / RateLimitRule
         match_condition = {
-          match_variable     = "RequestHeader"                                               #Options: Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri
+          match_variable     = "RequestHeader"                                 #Options: Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri
           match_values       = ["windows"]
-          operator           = "Contains"                                                    #Options: Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx
-          selector           = "UserAgent"                                                   #Used if matched_variable is  QueryString, PostArgs, RequestHeader or Cookies
-          negation_condition = false                                                         #If result of condition is negative
-          transforms         = ["Lowercase", "Trim"]                                         #Options: transforms - (Optional) Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode or URLEncode
+          operator           = "Contains"                                      #Options: Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx
+          selector           = "UserAgent"                                     #Used if matched_variable is  QueryString, PostArgs, RequestHeader or Cookies
+          negation_condition = false                                           #If result of condition is negative
+          transforms         = ["Lowercase", "Trim"]                           #Options: transforms - (Optional) Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode or URLEncode
         }
         rate_limit_duration_in_minutes = 1
         rate_limit_threshold           = 10
 
-      }                                                                                       #Add extra custom rules here (e.g. cr2 = {...})
+      }                                                                        #Add extra custom rules here (e.g. cr2 = {...})
     }
-    custom_block_response_status_code = 403                                                   #Options: 200, 403, 405, 406, or 429
+    custom_block_response_status_code = 403                                    #Options: 200, 403, 405, 406, or 429
     custom_block_response_body        = "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
 
     managed_rule = {
@@ -361,42 +362,42 @@ front-door-waf-settings = {
         version = "1.0"
         exclusion = {
           ex1 = {
-            match_variable = "QueryStringArgNames"                                            #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
-            operator       = "Equals"                                                         #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+            match_variable = "QueryStringArgNames"                             #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+            operator       = "Equals"                                          #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
             selector       = "not_suspicious"
-          }                                                                                   #Add extra managed rule exclusions here (e.g. ex2 = {...})
+          }                                                                    #Add extra managed rule exclusions here (e.g. ex2 = {...})
         }
         override = {
           or1 = {
             rule_group_name = "PHP"
             exclusion = {
               ex1 = {
-                match_variable = "QueryStringArgNames"                                        #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
-                operator       = "Equals"                                                     #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+                match_variable = "QueryStringArgNames"                         #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+                operator       = "Equals"                                      #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
                 selector       = "not_suspicious"
-              }                                                                               #add extra override exclusions here (e.g. ex2 = {...})
+              }                                                                #Add extra override exclusions here (e.g. ex2 = {...})
             }
             rule = {
               r1 = {
                 rule_id = "933100"
-                action  = "Block"                                                             #Options: Allow, Block, Log, or Redirect
-                enabled = false                                                               #Default: true
+                action  = "Block"                                              #Options: Allow, Block, Log, or Redirect
+                enabled = false                                                #Default: true
                 exclusion = {
                   ex1 = {
-                    match_variable = "QueryStringArgNames"                                    #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
-                    operator       = "Equals"                                                 #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+                    match_variable = "QueryStringArgNames"                     #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+                    operator       = "Equals"                                  #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
                     selector       = "not_suspicious"
-                  }                                                                           #Add extra rule exclusions here (e.g. ex2 = {...})
+                  }                                                            #Add extra rule exclusions here (e.g. ex2 = {...})
                 }
-              }                                                                               #Add extra rule to override here (e.g. r2 = {...})
+              }                                                                #Add extra rule to override here (e.g. r2 = {...})
             }
-          }                                                                                   #Add extra overrides here (e.g or2 = {...}
+          }                                                                    #Add extra overrides here (e.g or2 = {...}
         }
-      }                                                                                       #Add extra managed rules here (e.g. mr2 = {...})
+      }                                                                        #Add extra managed rules here (e.g. mr2 = {...})
     }
     tags = ""
 
-  }                                                                                           #Add extra WAF Policies here (e.g. waf2 = {...})
+  }                                                                            #Add extra WAF Policies here (e.g. waf2 = {...})
 }
 ```
 
