@@ -20,6 +20,7 @@ module "front-door" {
     tags                    = var.tags
 }
 ```
+Link to Terraform providor: https://www.terraform.io/docs/providers/azurerm/r/front_door.html
 
 ## Inputs
 | Name | Type | Default | Description | 
