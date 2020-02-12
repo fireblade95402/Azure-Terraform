@@ -253,6 +253,153 @@ front-door-object = {
 
 ```
 
+### front-door-waf-object
+(Required_ Confirguration object describing the Front Door WAF configuration.
+
+####Front Door WAF Parameters
+| Name | Type | Description |
+| -- | -- | -- |
+|name  | Required |  The name of the policy. Changing this forces a new resource to be created. | 
+|resource_group_name  | Required |  The name of the resource group. Changing this forces a new resource to be created. | 
+|enabled  | Optional |  Is the policy a enabled state or disabled state. Defaults to true. | 
+|mode  | Optional |  The firewall policy mode. Possible values are Detection, Prevention and defaults to Prevention. | 
+|redirect_url  | Optional |  If action type is redirect, this field represents redirect URL for the client. | 
+|custom_rule  | Optional |  One or more custom_rule blocks as defined below. | 
+|custom_block_response_status_code  | Optional |  If a custom_rule block's action type is block, this is the response status code. Possible values are 200, 403, 405, 406, or 429. | 
+|custom_block_response_body  | Optional |  If a custom_rule block's action type is block, this is the response body. The body must be specified in base64 encoding. | 
+|managed_rule  | Optional |  One or more managed_rule blocks as defined below. | 
+|tags  | Optional |  A mapping of tags to assign to the Web Application Firewall Policy. | 
+
+####Custom Rules
+| Name | Type | Description |
+| -- | -- | -- |
+|name  | Required |  Gets name of the resource that is unique within a policy. This name can be used to access the resource. | 
+|action  | Required |  The action to perform when the rule is matched. Possible values are Allow, Block, Log, or Redirect. | 
+|enabled  | Optional |  Is the rule is enabled or disabled? Defaults to true. | 
+|priority  | Required |  The priority of the rule. Rules with a lower value will be evaluated before rules with a higher value. Defaults to 1. | 
+|type  | Required |  The type of rule. Possible values are MatchRule or RateLimitRule. | 
+|match_condition  | Required |  One or more match_condition block defined below. | 
+|rate_limit_duration_in_minutes  | Optional |  The rate limit duration in minutes. Defaults to 1. | 
+|rate_limit_threshold  | Optional |  The rate limit threshold. Defaults to 10. | 
+
+####Match Condition
+| Name | Type | Description |
+| -- | -- | -- |
+|match_variable  | Required |  The request variable to compare with. Possible values are Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri. | 
+|match_values  | Required |  Up to 100 possible values to match. | 
+|operator  | Required |  Comparison type to use for matching with the variable value. Possible values are Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx. | 
+|selector  | Optional |  Match against a specific key if the match_variable is QueryString, PostArgs, RequestHeader or Cookies. | 
+|negation_condition  | Optional |  Should the result of the condition be negated. | 
+|transforms  | Optional |  Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode orURLEncode. | 
+
+####Managed Rule
+| Name | Type | Description |
+| -- | -- | -- |
+|type  | Required |  The name of the managed rule to use with this resource. | 
+|version  | Required |  The version on the managed rule to use with this resource. | 
+|exclusion  | Optional |  One or more exclusion blocks as defined below. | 
+|override  | Optional |  One or more override blocks as defined below. | 
+
+####Override
+| Name | Type | Description |
+| -- | -- | -- |
+|rule_group_name  | Required |  The managed rule group to override. | 
+|exclusion  | Optional |  One or more exclusion blocks as defined below. | 
+|rule  | Optional |  One or more rule blocks as defined below. If none are specified, all of the rules in the group will be disabled. | 
+
+####Rule
+| Name | Type | Description |
+| -- | -- | -- |
+|rule_id  | Required |  Identifier for the managed rule. | 
+|action  | Required |  The action to be applied when the rule matches. Possible values are Allow, Block, Log, or Redirect. | 
+|enabled  | Optional |  Is the managed rule override enabled or disabled. Defaults to false | 
+|exclusion  | Optional |  One or more exclusion blocks as defined below. | 
+
+####Exclusion
+| Name | Type | Description |
+| -- | -- | -- |
+|match_variable  | Required |  The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames. | 
+|operator  | Required |  Comparison operator to apply to the selector when specifying which elements in the collection this exclusion applies to. Possible values are: Equals, Contains, StartsWith, EndsWith, EqualsAny. | 
+|selector  | Required |  Selector for the value in the match_variable attribute this exclusion applies to. | 
+
+The following front-door-waf-object shows an example of the composition:
+
+```hcl
+Sample of front door waf configuration object below
+front-door-waf-settings = {
+  waf1 = {
+    name         = "TerraformPolicy"
+    enabled      = true                    #default: true
+    mode         = "Prevention"           #options: Prevention / Detection
+    redirect_url = "https://www.bing.com" #optional
+    custom_rule = {
+      cr1 = {
+        name     = "Rule1"
+        action   = "Block"     #options: Allow/Block/Log/Redirect
+        enabled  = true        #default: true
+        priority = 1           #default: 1
+        type     = "MatchRule" #options: MatchRule / RateLimitRule
+        match_condition = {
+          match_variable     = "RequestHeader" #options: Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri
+          match_values       = ["windows"]
+          operator           = "Contains"            #options: Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx
+          selector           = "UserAgent"           #Used if matched_variable is  QueryString, PostArgs, RequestHeader or Cookies
+          negation_condition = false                 #If result of condition is negative
+          transforms         = ["Lowercase", "Trim"] #options: transforms - (Optional) Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode or URLEncode
+        }
+        rate_limit_duration_in_minutes = 1
+        rate_limit_threshold           = 10
+
+      } #add extra custom rules here
+    }
+    custom_block_response_status_code = 403 #options: 200, 403, 405, 406, or 429
+    custom_block_response_body        = "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
+
+    managed_rule = {
+      mr1 = {
+        type    = "DefaultRuleSet"
+        version = "1.0"
+        exclusion = {
+          ex1 = {
+            match_variable = "QueryStringArgNames" #options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+            operator       = "Equals"              #options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+            selector       = "not_suspicious"
+          } # Add extra exclusions
+        }
+        override = {
+          or1 = {
+            rule_group_name = "PHP"
+            exclusion = {
+              ex1 = {
+                match_variable = "QueryStringArgNames" #options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+                operator       = "Equals"              #options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+                selector       = "not_suspicious"
+              } #add extra override exclusions
+            }
+            rule = {
+              r1 = {
+                rule_id = "933100"
+                action  = "Block" #options: Allow, Block, Log, or Redirect
+                enabled = false   #default: true
+                exclusion = {
+                  ex1 = {
+                    match_variable = "QueryStringArgNames" #options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+                    operator       = "Equals"              #options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+                    selector       = "not_suspicious"
+                  } #add extra rule exclusions
+                }
+              } #add extra rule to override
+            }
+          } #add extra overrides
+        }
+      } #add extra managed rules
+    }
+    tags = ""
+
+  } #Add extra WAF Policies
+}
+```
+
 ## Output
 
 | Name | Type | Description | 
