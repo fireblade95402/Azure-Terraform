@@ -16,11 +16,13 @@ module "front-door" {
     front-door-rg           = var.rg
     location                = var.location
     front-door-object       = var.front-door-object
-    front-door-waf=object   = var.front-door-waf-object
+    front-door-waf-object   = var.front-door-waf-object
     tags                    = var.tags
 }
 ```
-Link to Terraform providor: https://www.terraform.io/docs/providers/azurerm/r/front_door.html
+Link to Terraform providor:
+  * Front Door: https://www.terraform.io/docs/providers/azurerm/r/frontdoor.html
+  * Front Door WAF: https://www.terraform.io/docs/providers/azurerm/r/frontdoor_firewall_policy.html
 
 ## Inputs
 | Name | Type | Default | Description | 
@@ -28,14 +30,14 @@ Link to Terraform providor: https://www.terraform.io/docs/providers/azurerm/r/fr
 | front-door-rg | string | None | Name of the resource group where to create the resource. Changing this forces a new resource to be created. |
 | location | string | None | Specifies the Azure location to deploy the resource. Changing this forces a new resource to be created.  | 
 | front-door-object | object | None | Front Door configuration object as described in the Parameters section.  | 
-| networking_object | object | None | Front Door WAF configuration object as described in the Parameters section.  | 
+| front-door-waf-object | object | None | Front Door WAF configuration object as described in the Parameters section.  | 
 | tags | map | None | Map of tags for the deployment.  | 
 
 ## Parameters
 
 ### front-door-object
-(Required_ Confirguration object describing the Front Door configuration.
-The object has 3 mandatory sections as follows:
+(Required) Confirguration object describing the Front Door configuration.
+The object has sections are as follows:
 
 #### Front Door Parameters
 | Name | Type | Description |
@@ -53,7 +55,7 @@ The object has 3 mandatory sections as follows:
 |routing_rule  | Required |  A routing_rule block as defined below. | 
 |tags  | Optional |  A mapping of tags to assign to the resource. | 
 
-#### Backend Pool
+#### Backend Pool Block
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  Specifies the name of the Backend Pool. | 
@@ -61,7 +63,7 @@ The object has 3 mandatory sections as follows:
 |load_balancing_name  | Required |  Specifies the name of the backend_pool_load_balancing block within this resource to use for this Backend Pool. | 
 |health_probe_name  | Required |  Specifies the name of the backend_pool_health_probe block whithin this resource to use for this Backend Pool. | 
 
-#### Backend
+#### Backend Block
 | Name | Type | Description |
 | -- | -- | -- |
 |enabled  | Optional |  Specifies if the backend is enabled or not. Valid options are true or false. Defaults to true. | 
@@ -72,7 +74,7 @@ The object has 3 mandatory sections as follows:
 |priority  | Optional |  Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority backend is healthy. Defaults to 1. | 
 |weight  | Optional |  Weight of this endpoint for load balancing purposes. Defaults to 50. | 
 
-#### Frontend Endpoint
+#### Frontend Endpoint Block
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  Specifies the name of the frontend_endpoint. | 
@@ -84,7 +86,7 @@ The object has 3 mandatory sections as follows:
 |web_application_firewall_policy_link_id  | Optional |  Defines the Web Application Firewall policy ID for each host. | 
 
 
-#### Backend Pool Health Probe
+#### Backend Pool Health Probe Block
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  Specifies the name of the Health Probe. | 
@@ -92,7 +94,7 @@ The object has 3 mandatory sections as follows:
 |protocol  | Optional |  Protocol scheme to use for the Health Probe. Defaults to Http. | 
 |interval_in_seconds  | Optional |  The number of seconds between each Health Probe. Defaults to 120. | 
 
-#### Backend Pool Load Balancing
+#### Backend Pool Load Balancing Block
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  Specifies the name of the Load Balancer. | 
@@ -100,7 +102,7 @@ The object has 3 mandatory sections as follows:
 |successful_samples_required  | Optional |  The number of samples within the sample period that must succeed. Defaults to 2. | 
 |additional_latency_milliseconds  | Optional |  The additional latency in milliseconds for probes to fall into the lowest latency bucket. Defaults to 0. | 
 
-#### Routing Rule
+#### Routing Rule Block
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  Specifies the name of the Routing Rule. | 
@@ -111,7 +113,7 @@ The object has 3 mandatory sections as follows:
 |forwarding_configuration  | Optional |  A forwarding_configuration block as defined below. | 
 |redirect_configuration  | Optional |  A redirect_configuration block as defined below. | 
 
-#### Forwarding Configuration
+#### Forwarding Configuration Block
 | Name | Type | Description |
 | -- | -- | -- |
 |backend_pool_name  | Required |  Specifies the name of the Backend Pool to forward the incoming traffic to. | 
@@ -121,7 +123,7 @@ The object has 3 mandatory sections as follows:
 |custom_forwarding_path  | Optional |  Path to use when constructing the request to forward to the backend. This functions as a URL Rewrite. Default behavior preserves the URL path. | 
 |forwarding_protocol  | Optional |  Protocol to use when redirecting. Valid options are HttpOnly, HttpsOnly, or MatchRequest. Defaults to MatchRequest. | 
 
-#### Redirect Confirguration
+#### Redirect Confirguration Block
 | Name | Type | Description |
 | -- | -- | -- |
 |custom_host  | Optional |  Set this to change the URL for the redirection. | 
@@ -131,12 +133,12 @@ The object has 3 mandatory sections as follows:
 |custom_path  | Optional |  The path to retain as per the incoming request, or update in the URL for the redirection. | 
 |custom_query_string  | Optional |  Replace any existing query string from the incoming request URL. | 
 
-#### Custom HTTPS Configuration
+#### Custom HTTPS Configuration Block
 | Name | Type | Description |
 | -- | -- | -- |
 |certificate_source  | Optional |  Certificate source to encrypted HTTPS traffic with. Allowed values are FrontDoor or AzureKeyVault. Defaults to FrontDoor. | 
 
-#### If Certificate Source is "AzureKeyVault"
+#### If Certificate Source is "AzureKeyVault" 
 | Name | Type | Description |
 | -- | -- | -- |
 |azure_key_vault_certificate_vault_id  | Required |  The ID of the Key Vault containing the SSL certificate. | 
@@ -270,7 +272,7 @@ front-door-object = {
 |managed_rule  | Optional |  One or more managed_rule blocks as defined below. | 
 |tags  | Optional |  A mapping of tags to assign to the Web Application Firewall Policy. | 
 
-#### Custom Rules
+#### Custom Rules Block
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  Gets name of the resource that is unique within a policy. This name can be used to access the resource. | 
@@ -282,7 +284,7 @@ front-door-object = {
 |rate_limit_duration_in_minutes  | Optional |  The rate limit duration in minutes. Defaults to 1. | 
 |rate_limit_threshold  | Optional |  The rate limit threshold. Defaults to 10. | 
 
-#### Match Condition
+#### Match Condition Block
 | Name | Type | Description |
 | -- | -- | -- |
 |match_variable  | Required |  The request variable to compare with. Possible values are Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri. | 
@@ -292,7 +294,7 @@ front-door-object = {
 |negation_condition  | Optional |  Should the result of the condition be negated. | 
 |transforms  | Optional |  Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode orURLEncode. | 
 
-#### Managed Rule
+#### Managed Rule Block
 | Name | Type | Description |
 | -- | -- | -- |
 |type  | Required |  The name of the managed rule to use with this resource. | 
@@ -300,14 +302,14 @@ front-door-object = {
 |exclusion  | Optional |  One or more exclusion blocks as defined below. | 
 |override  | Optional |  One or more override blocks as defined below. | 
 
-#### Override
+#### Override Block
 | Name | Type | Description |
 | -- | -- | -- |
 |rule_group_name  | Required |  The managed rule group to override. | 
 |exclusion  | Optional |  One or more exclusion blocks as defined below. | 
 |rule  | Optional |  One or more rule blocks as defined below. If none are specified, all of the rules in the group will be disabled. | 
 
-#### Rule
+#### Rule Block
 | Name | Type | Description |
 | -- | -- | -- |
 |rule_id  | Required |  Identifier for the managed rule. | 
@@ -315,7 +317,7 @@ front-door-object = {
 |enabled  | Optional |  Is the managed rule override enabled or disabled. Defaults to false | 
 |exclusion  | Optional |  One or more exclusion blocks as defined below. | 
 
-#### Exclusion
+#### Exclusion Block
 | Name | Type | Description |
 | -- | -- | -- |
 |match_variable  | Required |  The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames. | 
@@ -405,16 +407,8 @@ front-door-waf-object = {
 
 | Name | Type | Description | 
 | -- | -- | -- | 
+| front-door-object | Object | Object with the outputs from the Front Door provider. |
+| front-door-waf-object | Object with the outputs from the Front Door WAF provider. |
 
  The WAF policies are linked to the Frontend Endpoints within Azure Front Door.
  
-## Example running Terraform
-
-From the modules/deploy-front-door folder. You can run a similar statement to below:
-
-```bash
-terraform init
-terraform plan -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/dev/front-door-waf.tfvars"
-terraform apply -var-file="../../org/dev/front-door.tfvars" -var-file="../../org/dev/front-door-waf.tfvars"
-```
-
