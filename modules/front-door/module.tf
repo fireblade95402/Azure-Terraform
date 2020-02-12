@@ -31,7 +31,7 @@ resource "azurerm_frontdoor" "front-door" {
         for_each = routing_rule.value.configuration == "Forwarding" ? [routing_rule.value.forwarding_configuration] : []
         content {
           backend_pool_name                     = routing_rule.value.forwarding_configuration.backend_pool_name
-          cache_enabled                         = routing_rule.value.forwarding_configuration.cache_enabled                 #(tbc)          
+          cache_enabled                         = routing_rule.value.forwarding_configuration.cache_enabled                           
           cache_use_dynamic_compression         = routing_rule.value.forwarding_configuration.cache_use_dynamic_compression #default: false
           cache_query_parameter_strip_directive = routing_rule.value.forwarding_configuration.cache_query_parameter_strip_directive
           custom_forwarding_path                = routing_rule.value.forwarding_configuration.custom_forwarding_path
