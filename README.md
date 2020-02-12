@@ -408,7 +408,7 @@ front-door-waf-object = {
 | Name | Type | Description | 
 | -- | -- | -- | 
 | front-door-object | Object | Object with the outputs from the Front Door provider. |
-| front-door-waf-object | Object with the outputs from the Front Door WAF provider. |
+| front-door-waf-object | Object | Object with the outputs from the Front Door WAF provider. |
 
  The WAF policies are linked to the Frontend Endpoints within Azure Front Door.
  
