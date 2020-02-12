@@ -1,3 +1,14 @@
+#Create 1 to x Azure Front Door Policies
+module "azure_front_door_waf" {
+  source = "./front-door-waf"
+
+  front-door-rg           = var.front-door-rg
+  location                = var.location
+  front-door-waf-object   = var.front-door-waf-object
+  tags                    = var.tags
+
+}
+  
 #Create Azure Front Door Resource
 resource "azurerm_frontdoor" "front-door" {
   depends_on                                   = [module.azure_front_door_waf]
@@ -102,15 +113,4 @@ resource "azurerm_frontdoor" "front-door" {
       }
     }
   }
-}
-
-#Create 1 to x Azure Front Door Policies
-module "azure_front_door_waf" {
-  source = "./front-door-waf"
-
-  front-door-rg           = var.front-door-rg
-  location                = var.location
-  front-door-waf-object   = var.front-door-waf-object
-  tags                    = var.tags
-
 }
