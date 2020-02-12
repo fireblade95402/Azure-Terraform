@@ -1,7 +1,7 @@
-resource "azurerm_frontdoor_firewall_policy" "afd-waf-policy" {
-  for_each                          = var.front-door-waf-settings
+resource "azurerm_frontdoor_firewall_policy" "front-door-waf-policy" {
+  for_each                          = var.front-door-waf-object
   name                              = each.value.name
-  resource_group_name               = var.az_afd_rg
+  resource_group_name               = var.front-door.rg
   enabled                           = each.value.enabled
   mode                              = each.value.mode
   redirect_url                      = each.value.redirect_url
