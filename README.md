@@ -55,6 +55,7 @@ The object has 3 mandatory sections as follows:
 
 #### Backend Pool
 | Name | Type | Description |
+| -- | -- | -- |
 |name  | Required |  Specifies the name of the Backend Pool. | 
 |backend  | Required |  A backend block as defined below. | 
 |load_balancing_name  | Required |  Specifies the name of the backend_pool_load_balancing block within this resource to use for this Backend Pool. | 
@@ -62,6 +63,7 @@ The object has 3 mandatory sections as follows:
 
 #### Backend
 | Name | Type | Description |
+| -- | -- | -- |
 |enabled  | Optional |  Specifies if the backend is enabled or not. Valid options are true or false. Defaults to true. | 
 |address  | Required |  Location of the backend (IP address or FQDN) | 
 |host_header  | Required |  The value to use as the host header sent to the backend. | 
@@ -72,6 +74,7 @@ The object has 3 mandatory sections as follows:
 
 #### Frontend Endpoint
 | Name | Type | Description |
+| -- | -- | -- |
 |name  | Required |  Specifies the name of the frontend_endpoint. | 
 |host_name  | Required |  Specifies the host name of the frontend_endpoint. Must be a domain name. | 
 |session_affinity_enabled  | Optional |  Whether to allow session affinity on this host. Valid options are true or false Defaults to false. | 
@@ -82,6 +85,7 @@ The object has 3 mandatory sections as follows:
 
 #### Backend Pool Health Probe
 | Name | Type | Description |
+| -- | -- | -- |
 |name  | Required |  Specifies the name of the Health Probe. | 
 |path  | Optional |  The path to use for the Health Probe. Default is /. | 
 |protocol  | Optional |  Protocol scheme to use for the Health Probe. Defaults to Http. | 
@@ -89,6 +93,7 @@ The object has 3 mandatory sections as follows:
 
 #### Backend Pool Load Balancing
 | Name | Type | Description |
+| -- | -- | -- |
 |name  | Required |  Specifies the name of the Load Balancer. | 
 |sample_size  | Optional |  The number of samples to consider for load balancing decisions. Defaults to 4. | 
 |successful_samples_required  | Optional |  The number of samples within the sample period that must succeed. Defaults to 2. | 
@@ -105,6 +110,7 @@ The object has 3 mandatory sections as follows:
 
 #### Forwarding Configuration
 | Name | Type | Description |
+| -- | -- | -- |
 |backend_pool_name  | Required |  Specifies the name of the Backend Pool to forward the incoming traffic to. | 
 |cache_enabled  | Optional |  Specifies whether to Enable caching or not. Valid options are true or false. Defaults to true. | 
 |cache_use_dynamic_compression  | Optional |  Whether to use dynamic compression when caching. Valid options are true or false. Defaults to false. | 
@@ -114,6 +120,7 @@ The object has 3 mandatory sections as follows:
 
 #### Redirect Confirguration
 | Name | Type | Description |
+| -- | -- | -- |
 |custom_host  | Optional |  Set this to change the URL for the redirection. | 
 |redirect_protocol  | Optional |  Protocol to use when redirecting. Valid options are HttpOnly, HttpsOnly, or MatchRequest. Defaults to MatchRequest | 
 |redirect_type  | Optional |  Status code for the redirect. Valida options are Moved, Found, TemporaryRedirect, PermanentRedirect. Defaults to Found | 
@@ -123,10 +130,12 @@ The object has 3 mandatory sections as follows:
 
 #### Custom HTTPS Configuration
 | Name | Type | Description |
+| -- | -- | -- |
 |certificate_source  | Optional |  Certificate source to encrypted HTTPS traffic with. Allowed values are FrontDoor or AzureKeyVault. Defaults to FrontDoor. | 
 
 #### If Certificate Source is "AzureKeyVault"
 | Name | Type | Description |
+| -- | -- | -- |
 |azure_key_vault_certificate_vault_id  | Required |  The ID of the Key Vault containing the SSL certificate. | 
 |azure_key_vault_certificate_secret_name  | Required |  The name of the Key Vault secret representing the full certificate PFX. | 
 |azure_key_vault_certificate_secret_version  | Required |  The version of the Key Vault secret representing the full certificate PFX. | 
