@@ -1,5 +1,5 @@
 #Create Azure Front Door Resource
-resource "azurerm_frontdoor" "cdn" {
+resource "azurerm_frontdoor" "front-door" {
   depends_on                                   = [module.azure_front_door_waf]
   name                                         = var.front-door-object.name
   friendly_name                                = var.front-door-object.friendly_name
