@@ -82,6 +82,7 @@ The object has 3 mandatory sections as follows:
 |custom_https_provisioning_enabled  | Required |  Should the HTTPS protocol be enabled for a custom domain associated with the Front Door? | 
 |custom_https_configuration  | Optional |  A custom_https_configuration block as defined below. | 
 |web_application_firewall_policy_link_id  | Optional |  Defines the Web Application Firewall policy ID for each host. | 
+> NOTE: This block is required when custom_https_provisioning_enabled is set to true.
 
 #### Backend Pool Health Probe
 | Name | Type | Description |
