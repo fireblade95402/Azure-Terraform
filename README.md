@@ -180,7 +180,7 @@ front-door-object = {
         custom_path         = ""
         custom_query_string = ""
       }
-    }                                                                             #Add extra routing rules here (e.g. rr2 = {...}
+    }                                                                             #Add extra routing rules here (e.g. rr2 = {...})
   }
 
   backend_pool_load_balancing = {
@@ -189,7 +189,7 @@ front-door-object = {
       sample_size                     = 4                                         #Default: 4
       successful_samples_required     = 2                                         #Default: 2
       additional_latency_milliseconds = 0                                         #Default: 0
-    }                                                                             #Add extra backend load balancing names here (e.g. lb2 = {...}
+    }                                                                             #Add extra backend load balancing names here (e.g. lb2 = {...})
   }
 
   backend_pool_health_probe = {
@@ -198,7 +198,7 @@ front-door-object = {
       path                = "/"
       protocol            = "Http"                                                #Default: Http
       interval_in_seconds = 120                                                   #Default: 120
-    }                                                                             #Add extra health probes here (e.g. hp2 = {...}
+    }                                                                             #Add extra health probes here (e.g. hp2 = {...})
   }
 
   backend_pool = {
@@ -222,11 +222,11 @@ front-door-object = {
           https_port  = 443
           priority    = 1  #default: 1
           weight      = 50 #default: 50
-        }                                                                        #Add extra backend's here (e.g. be3 = {...}
+        }                                                                        #Add extra backend's here (e.g. be3 = {...})
       }
       load_balancing_name = "exampleLoadBalancingSettings1"                      #Name of backend_pool_load_balancing to use
       health_probe_name   = "exampleHealthProbeSetting1"                         #Name of backend_pool_health_probe to use
-    }                                                                            #Add extra backend pools here (e.g. bp2 = {...}
+    }                                                                            #Add extra backend pools here (e.g. bp2 = {...})
   }
 
   frontend_endpoint = {
@@ -246,7 +246,7 @@ front-door-object = {
       }
       #Links the WAF Policy to the Fronend Endpoints 
       web_application_firewall_policy_link_name = "TerraformPolicy"              #Optional Enter the name of the waf policy you'll be creating 
-    }                                                                            #Add extra  frontend Endpoints here (e.g. fe2 = {...}
+    }                                                                            #Add extra  frontend Endpoints here (e.g. fe2 = {...})
 
   }
 }
@@ -256,7 +256,7 @@ front-door-object = {
 ### front-door-waf-object
 (Required_ Confirguration object describing the Front Door WAF configuration.
 
-####Front Door WAF Parameters
+#### Front Door WAF Parameters
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  The name of the policy. Changing this forces a new resource to be created. | 
@@ -270,7 +270,7 @@ front-door-object = {
 |managed_rule  | Optional |  One or more managed_rule blocks as defined below. | 
 |tags  | Optional |  A mapping of tags to assign to the Web Application Firewall Policy. | 
 
-####Custom Rules
+#### Custom Rules
 | Name | Type | Description |
 | -- | -- | -- |
 |name  | Required |  Gets name of the resource that is unique within a policy. This name can be used to access the resource. | 
@@ -282,7 +282,7 @@ front-door-object = {
 |rate_limit_duration_in_minutes  | Optional |  The rate limit duration in minutes. Defaults to 1. | 
 |rate_limit_threshold  | Optional |  The rate limit threshold. Defaults to 10. | 
 
-####Match Condition
+#### Match Condition
 | Name | Type | Description |
 | -- | -- | -- |
 |match_variable  | Required |  The request variable to compare with. Possible values are Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri. | 
@@ -292,7 +292,7 @@ front-door-object = {
 |negation_condition  | Optional |  Should the result of the condition be negated. | 
 |transforms  | Optional |  Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode orURLEncode. | 
 
-####Managed Rule
+#### Managed Rule
 | Name | Type | Description |
 | -- | -- | -- |
 |type  | Required |  The name of the managed rule to use with this resource. | 
@@ -300,14 +300,14 @@ front-door-object = {
 |exclusion  | Optional |  One or more exclusion blocks as defined below. | 
 |override  | Optional |  One or more override blocks as defined below. | 
 
-####Override
+#### Override
 | Name | Type | Description |
 | -- | -- | -- |
 |rule_group_name  | Required |  The managed rule group to override. | 
 |exclusion  | Optional |  One or more exclusion blocks as defined below. | 
 |rule  | Optional |  One or more rule blocks as defined below. If none are specified, all of the rules in the group will be disabled. | 
 
-####Rule
+#### Rule
 | Name | Type | Description |
 | -- | -- | -- |
 |rule_id  | Required |  Identifier for the managed rule. | 
@@ -315,7 +315,7 @@ front-door-object = {
 |enabled  | Optional |  Is the managed rule override enabled or disabled. Defaults to false | 
 |exclusion  | Optional |  One or more exclusion blocks as defined below. | 
 
-####Exclusion
+#### Exclusion
 | Name | Type | Description |
 | -- | -- | -- |
 |match_variable  | Required |  The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames. | 
@@ -329,30 +329,30 @@ Sample of front door waf configuration object below
 front-door-waf-settings = {
   waf1 = {
     name         = "TerraformPolicy"
-    enabled      = true                    #default: true
-    mode         = "Prevention"           #options: Prevention / Detection
-    redirect_url = "https://www.bing.com" #optional
+    enabled      = true                                                                      #Default: true
+    mode         = "Prevention"                                                              #Options: Prevention / Detection
+    redirect_url = "https://www.bing.com"                                                    #Optional
     custom_rule = {
       cr1 = {
         name     = "Rule1"
-        action   = "Block"     #options: Allow/Block/Log/Redirect
-        enabled  = true        #default: true
-        priority = 1           #default: 1
-        type     = "MatchRule" #options: MatchRule / RateLimitRule
+        action   = "Block"                                                                   #Options: Allow/Block/Log/Redirect
+        enabled  = true                                                                      #Default: true
+        priority = 1                                                                         #Default: 1
+        type     = "MatchRule"                                                               #Options: MatchRule / RateLimitRule
         match_condition = {
-          match_variable     = "RequestHeader" #options: Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri
+          match_variable     = "RequestHeader"                                               #Options: Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, or RequestUri
           match_values       = ["windows"]
-          operator           = "Contains"            #options: Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx
-          selector           = "UserAgent"           #Used if matched_variable is  QueryString, PostArgs, RequestHeader or Cookies
-          negation_condition = false                 #If result of condition is negative
-          transforms         = ["Lowercase", "Trim"] #options: transforms - (Optional) Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode or URLEncode
+          operator           = "Contains"                                                    #Options: Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual or RegEx
+          selector           = "UserAgent"                                                   #Used if matched_variable is  QueryString, PostArgs, RequestHeader or Cookies
+          negation_condition = false                                                         #If result of condition is negative
+          transforms         = ["Lowercase", "Trim"]                                         #Options: transforms - (Optional) Up to 5 transforms to apply. Possible values are Lowercase, RemoveNulls, Trim, Uppercase, URLDecode or URLEncode
         }
         rate_limit_duration_in_minutes = 1
         rate_limit_threshold           = 10
 
-      } #add extra custom rules here
+      }                                                                                       #Add extra custom rules here (e.g. cr2 = {...})
     }
-    custom_block_response_status_code = 403 #options: 200, 403, 405, 406, or 429
+    custom_block_response_status_code = 403                                                   #Options: 200, 403, 405, 406, or 429
     custom_block_response_body        = "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
 
     managed_rule = {
@@ -361,42 +361,42 @@ front-door-waf-settings = {
         version = "1.0"
         exclusion = {
           ex1 = {
-            match_variable = "QueryStringArgNames" #options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
-            operator       = "Equals"              #options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+            match_variable = "QueryStringArgNames"                                            #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+            operator       = "Equals"                                                         #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
             selector       = "not_suspicious"
-          } # Add extra exclusions
+          }                                                                                   #Add extra managed rule exclusions here (e.g. ex2 = {...})
         }
         override = {
           or1 = {
             rule_group_name = "PHP"
             exclusion = {
               ex1 = {
-                match_variable = "QueryStringArgNames" #options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
-                operator       = "Equals"              #options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+                match_variable = "QueryStringArgNames"                                        #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+                operator       = "Equals"                                                     #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
                 selector       = "not_suspicious"
-              } #add extra override exclusions
+              }                                                                               #add extra override exclusions here (e.g. ex2 = {...})
             }
             rule = {
               r1 = {
                 rule_id = "933100"
-                action  = "Block" #options: Allow, Block, Log, or Redirect
-                enabled = false   #default: true
+                action  = "Block"                                                             #Options: Allow, Block, Log, or Redirect
+                enabled = false                                                               #Default: true
                 exclusion = {
                   ex1 = {
-                    match_variable = "QueryStringArgNames" #options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
-                    operator       = "Equals"              #options: Equals, Contains, StartsWith, EndsWith, EqualsAny
+                    match_variable = "QueryStringArgNames"                                    #Options: match_variable - (Required) The variable type to be excluded. Possible values are QueryStringArgNames, RequestBodyPostArgNames, RequestCookieNames, RequestHeaderNames
+                    operator       = "Equals"                                                 #Options: Equals, Contains, StartsWith, EndsWith, EqualsAny
                     selector       = "not_suspicious"
-                  } #add extra rule exclusions
+                  }                                                                           #Add extra rule exclusions here (e.g. ex2 = {...})
                 }
-              } #add extra rule to override
+              }                                                                               #Add extra rule to override here (e.g. r2 = {...})
             }
-          } #add extra overrides
+          }                                                                                   #Add extra overrides here (e.g or2 = {...}
         }
-      } #add extra managed rules
+      }                                                                                       #Add extra managed rules here (e.g. mr2 = {...})
     }
     tags = ""
 
-  } #Add extra WAF Policies
+  }                                                                                           #Add extra WAF Policies here (e.g. waf2 = {...})
 }
 ```
 
