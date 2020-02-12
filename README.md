@@ -100,7 +100,9 @@ The object has 3 mandatory sections as follows:
 |successful_samples_required  | Optional |  The number of samples within the sample period that must succeed. Defaults to 2. | 
 |additional_latency_milliseconds  | Optional |  The additional latency in milliseconds for probes to fall into the lowest latency bucket. Defaults to 0. | 
 
-
+#### Routing Rule
+| Name | Type | Description |
+| -- | -- | -- |
 |name  | Required |  Specifies the name of the Routing Rule. | 
 |frontend_endpoints  | Required |  The names of the frontend_endpoint blocks whithin this resource to associate with this routing_rule. | 
 |accepted_protocols  | Optional |  Protocol schemes to match for the Backend Routing Rule. Defaults to Http. | 
