@@ -108,9 +108,9 @@ resource "azurerm_frontdoor" "cdn" {
 module "azure_front_door_waf" {
   source = "./front-door-waf"
 
-  az_afd_rg               = var.front-door-rg
+  front-door-rg           = var.front-door-rg
   location                = var.location
-  front-door-waf-settings = var.front-door-waf-settings
+  front-door-waf-object   = var.front-door-waf-object
   tags                    = var.tags
 
 }
