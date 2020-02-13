@@ -31,7 +31,7 @@ To run this example, simply follow to steps below:
 
   Once you are done, just run 
   ```hcl
-  terraform destroy
+  terraform destroy --var-file="front-door.tfvars" --var-file="front-door-waf.tfvars"
   ```
 
 ## Output
