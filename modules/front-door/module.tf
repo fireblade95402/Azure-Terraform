@@ -1,16 +1,26 @@
-#Create Azure Front Door Resource
-resource "azurerm_frontdoor" "cdn" {
-  depends_on                                   = [module.azure_front_door_waf]
-  name                                         = var.front-door-settings.name
-  friendly_name                                = var.front-door-settings.friendly_name
-  location                                     = var.location
-  resource_group_name                          = var.az_afd_rg
-  enforce_backend_pools_certificate_name_check = var.front-door-settings.enforce_backend_pools_certificate_name_check
-  load_balancer_enabled                        = var.front-door-settings.load_balancer_enabled
+#Create 1 to x Azure Front Door Policies
+module "azure_front_door_waf" {
+  source = "./front-door-waf"
 
+  front-door-rg           = var.front-door-rg
+  front-door-waf-object   = var.front-door-waf-object
+  tags                    = var.tags
+
+}
+  
+#Create Azure Front Door Resource
+resource "azurerm_frontdoor" "front-door" {
+  depends_on                                   = [module.azure_front_door_waf]
+  name                                         = var.front-door-object.name
+  friendly_name                                = var.front-door-object.friendly_name
+  location                                     = var.location
+  resource_group_name                          = var.front-door-rg
+  enforce_backend_pools_certificate_name_check = var.front-door-object.enforce_backend_pools_certificate_name_check
+  load_balancer_enabled                        = var.front-door-object.load_balancer_enabled
+  tags                                         = var.tags
 
   dynamic "routing_rule" {
-    for_each = var.front-door-settings.routing_rule
+    for_each = var.front-door-object.routing_rule
     content {
       name               = routing_rule.value.name
       accepted_protocols = routing_rule.value.accepted_protocols
@@ -20,7 +30,7 @@ resource "azurerm_frontdoor" "cdn" {
         for_each = routing_rule.value.configuration == "Forwarding" ? [routing_rule.value.forwarding_configuration] : []
         content {
           backend_pool_name                     = routing_rule.value.forwarding_configuration.backend_pool_name
-          cache_enabled                         = routing_rule.value.forwarding_configuration.cache_enabled                 #(tbc)          
+          cache_enabled                         = routing_rule.value.forwarding_configuration.cache_enabled                           
           cache_use_dynamic_compression         = routing_rule.value.forwarding_configuration.cache_use_dynamic_compression #default: false
           cache_query_parameter_strip_directive = routing_rule.value.forwarding_configuration.cache_query_parameter_strip_directive
           custom_forwarding_path                = routing_rule.value.forwarding_configuration.custom_forwarding_path
@@ -42,7 +52,7 @@ resource "azurerm_frontdoor" "cdn" {
   }
 
   dynamic "backend_pool_load_balancing" {
-    for_each = var.front-door-settings.backend_pool_load_balancing
+    for_each = var.front-door-object.backend_pool_load_balancing
     content {
       name                            = backend_pool_load_balancing.value.name
       sample_size                     = backend_pool_load_balancing.value.sample_size
@@ -52,7 +62,7 @@ resource "azurerm_frontdoor" "cdn" {
   }
 
   dynamic "backend_pool_health_probe" {
-    for_each = var.front-door-settings.backend_pool_health_probe
+    for_each = var.front-door-object.backend_pool_health_probe
     content {
       name                = backend_pool_health_probe.value.name
       path                = backend_pool_health_probe.value.path
@@ -62,7 +72,7 @@ resource "azurerm_frontdoor" "cdn" {
   }
 
   dynamic "frontend_endpoint" {
-    for_each = var.front-door-settings.frontend_endpoint
+    for_each = var.front-door-object.frontend_endpoint
     content {
       name                              = frontend_endpoint.value.name
       host_name                         = frontend_endpoint.value.host_name
@@ -82,7 +92,7 @@ resource "azurerm_frontdoor" "cdn" {
   }
 
   dynamic "backend_pool" {
-    for_each = var.front-door-settings.backend_pool
+    for_each = var.front-door-object.backend_pool
     content {
       name                = backend_pool.value.name
       load_balancing_name = backend_pool.value.load_balancing_name
@@ -102,19 +112,4 @@ resource "azurerm_frontdoor" "cdn" {
       }
     }
   }
-}
-
-#Create 1 to x Azure Front Door Policies
-module "azure_front_door_waf" {
-  source = "./front-door-waf"
-
-  az_afd_name             = var.front-door-settings.name
-  az_afd_rg               = var.az_afd_rg
-  location                = var.location
-  front-door-waf-settings = var.front-door-waf-settings
-  tags                    = ""
-
-  ARM_SUBSCRIPTION_ID = var.ARM_SUBSCRIPTION_ID
-  ARM_LOCATION        = var.ARM_LOCATION
-  ARM_ENVIRONMENT     = var.ARM_ENVIRONMENT
 }
