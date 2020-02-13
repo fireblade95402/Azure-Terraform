@@ -17,3 +17,4 @@ variable "front-door-waf-object" {
 variable "tags" {
   description = "(Required) Tags of the Front Door to be created"  
 }
+
