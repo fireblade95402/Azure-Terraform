@@ -3,7 +3,6 @@ module "azure_front_door_waf" {
   source = "./front-door-waf"
 
   front-door-rg           = var.front-door-rg
-  location                = var.location
   front-door-waf-object   = var.front-door-waf-object
   tags                    = var.tags
 
@@ -18,7 +17,7 @@ resource "azurerm_frontdoor" "front-door" {
   resource_group_name                          = var.front-door-rg
   enforce_backend_pools_certificate_name_check = var.front-door-object.enforce_backend_pools_certificate_name_check
   load_balancer_enabled                        = var.front-door-object.load_balancer_enabled
-
+  tags                                         = var.tags
 
   dynamic "routing_rule" {
     for_each = var.front-door-object.routing_rule
