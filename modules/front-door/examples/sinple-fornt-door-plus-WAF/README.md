@@ -34,7 +34,10 @@ To run this example, simply follow to steps below:
   terraform destroy
   ```
 
-## Outputs
-| Name | Description |
-| --   | -- |
-| object | Returns the Azure Container Registry object | 
+## Output
+
+| Name | Type | Description | 
+| -- | -- | -- | 
+| front-door-object | Object | Object with the outputs from the Front Door provider. |
+| front-door-waf-object | Object | Object with the outputs from the Front Door WAF provider. |
+
