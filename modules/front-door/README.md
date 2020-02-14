@@ -10,7 +10,7 @@ Creates a Front Front Door with:
 Reference the module to a specific version (recommended):
 ```hcl
 module "front-door" {
-    source = "../front-door"
+    source = "../front-door"           #Point to front-end module location
     
     front-door-rg           = var.rg
     location                = var.location
