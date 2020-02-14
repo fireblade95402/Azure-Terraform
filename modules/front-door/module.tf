@@ -87,7 +87,7 @@ resource "azurerm_frontdoor" "front-door" {
           azure_key_vault_certificate_secret_version = custom_https_configuration.value.azure_key_vault_certificate_secret_version
         }
       }
-      web_application_firewall_policy_link_id = module.azure_front_door_waf.waf-map[frontend_endpoint.value.web_application_firewall_policy_link_name]
+      web_application_firewall_policy_link_id = frontend_endpoint.value.web_application_firewall_policy_link_name != "" ? module.azure_front_door_waf.waf-map[frontend_endpoint.value.web_application_firewall_policy_link_name] : ""
     }
   }
 
