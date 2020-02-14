@@ -10,8 +10,7 @@ Creates a Front Front Door with:
 Reference the module to a specific version (recommended):
 ```hcl
 module "front-door" {
-    source = "aztfmod/caf-front-door/azurerm"
-    version = "0.x.y"
+    source = "../front-door"
     
     front-door-rg           = var.rg
     location                = var.location
