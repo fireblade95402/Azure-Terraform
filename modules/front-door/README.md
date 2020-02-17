@@ -267,7 +267,7 @@ front-door-object = {
 |redirect_url  | Optional |  If action type is redirect, this field represents redirect URL for the client. | 
 |custom_rule  | Optional |  One or more custom_rule blocks as defined below. | 
 |custom_block_response_status_code  | Optional |  If a custom_rule block's action type is block, this is the response status code. Possible values are 200, 403, 405, 406, or 429. | 
-|custom_block_response_body  | Optional |  If a custom_rule block's action type is block, this is the response body. The body must be specified in base64 encoding. | 
+|custom_block_response_body  | Optional |  If a custom_rule block's action type is block, this is the response body needs to be set here. Possible values are either a ***relative path to a file*** or ***content***. | 
 |managed_rule  | Optional |  One or more managed_rule blocks as defined below. | 
 |tags  | Optional |  A mapping of tags to assign to the Web Application Firewall Policy. | 
 
@@ -355,7 +355,7 @@ front-door-waf-object = {
       }                                                                        #Add extra custom rules here (e.g. cr2 = {...})
     }
     custom_block_response_status_code = 403                                    #Options: 200, 403, 405, 406, or 429
-    custom_block_response_body        = "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
+    custom_block_response_body        = "./blocked-response.html"              #Options: Relative path to a file or content for the blocked response body. (e.g. "./blocked-response.html" or "Blocked by WAF Policy")
 
     managed_rule = {
       mr1 = {

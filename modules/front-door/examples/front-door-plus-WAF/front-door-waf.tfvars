@@ -25,7 +25,7 @@ front-door-waf-object = {
       }
     }
     custom_block_response_status_code = 403
-    custom_block_response_body        = "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="
+    custom_block_response_body        = "./blocked-response.html"
 
     managed_rule = {
       mr1 = {
